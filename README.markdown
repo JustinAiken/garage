@@ -35,4 +35,6 @@ But if you do, this can help keep OpenHAB up on it.
 - Author: [JustinAiken](https://github.com/JustinAiken)
 - Lots of MyQ API interactions borrowed from the [liftmaster_myq gem](https://github.com/pfeffed/liftmaster_myq).
 
+### License
+
 [MIT](LICENSE)
