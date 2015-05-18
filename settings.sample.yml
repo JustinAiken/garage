@@ -1,0 +1,7 @@
+my_q:
+  user: 'your chamberlain user'
+  pass: 'your chamberlain password'
+  door_id: "your door's device id"
+openhab:
+  base_url: 'http://path_to_your_openhab/rest/items/'
+  item_name: 'Your openhab item name'
