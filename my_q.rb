@@ -22,7 +22,7 @@ end
 class MyQ::Client
 
   NoTokenError = Class.new StandardError
-  GARAGE_PATH  = 'garage'
+  GARAGE_PATH  = 'token'
 
   def initialize(username: nil, password: nil, token: nil, door_id: nil)
     @username = username

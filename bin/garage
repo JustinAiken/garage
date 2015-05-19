@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+require 'pathname'
+require 'bundler'
+
+APP_ROOT = Pathname.new File.expand_path('../../',  __FILE__)
+
+require "#{APP_ROOT}/garage.rb"
+
+case ARGV[0]
+when 'status' then puts Garage.status
+when 'update' then OpenHABUpdater.update! Garage.status
+when 'open'   then Garage.open!
+when 'close'  then Garage.close!
+else
+  raise ArgumentError, "Must be status/update/open/close!"
+end
