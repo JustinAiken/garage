@@ -21,6 +21,8 @@ end
 
 class MyQ::Client
 
+  @@tries = 0
+
   NoTokenError = Class.new StandardError
   GARAGE_PATH  = 'token'
 
@@ -32,8 +34,26 @@ class MyQ::Client
   end
 
   def status
-    state = HTTParty.get(check_door_state_uri).parsed_response["AttributeValue"]
-    MyQ::STATES[state]
+    response = HTTParty.get check_door_state_uri
+    state    = response.parsed_response['AttributeValue']
+    if state
+      @@tries = 0
+      puts "state = #{state} (#{MyQ::STATES[state]})"
+      return MyQ::STATES[state]
+    else
+      puts "Error getting door status"
+      puts "Error: #{response.code}"
+      puts response.parsed_response
+
+      if (response.parsed_response['ReturnCode'] == '-3333') && @@tries < 2
+        @@tries = @@tries + 1
+        puts "Trying to re-login..."
+        @token = fetch_token
+        return status if @token
+      else
+        return nil
+      end
+    end
   end
 
   def open!
@@ -57,6 +77,7 @@ private
   end
 
   def fetch_token
+    puts "GET #{login_uri}"
     token = HTTParty.get(login_uri).parsed_response["SecurityToken"]
     raise NoTokenError unless token
     File.open(GARAGE_PATH, 'w') { |f| f.write token }
